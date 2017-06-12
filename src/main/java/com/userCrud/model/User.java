@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity 
 @Table(name = "users")
 public class User extends AbstractTimeStampModel {
@@ -15,6 +17,7 @@ public class User extends AbstractTimeStampModel {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+	@ApiModelProperty(hidden = true)
     private Long id;
     
     @Column(name = "name", nullable = false)

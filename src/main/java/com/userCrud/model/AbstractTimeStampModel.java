@@ -8,17 +8,22 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @MappedSuperclass
 @SuppressWarnings("serial")
 public class AbstractTimeStampModel implements Serializable { 
 	
 	@Column(name = "created_at")
+	@ApiModelProperty(hidden = true)
     private Date createdAt;
 
     @Column(name = "updated_at")
+    @ApiModelProperty(hidden = true)
     private Date updatedAt;
     
     @Column(name = "activated")
+    @ApiModelProperty(hidden = true)
     private Boolean activated;
 	
 	public Date getCreatedAt() {
