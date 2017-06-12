@@ -6,44 +6,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.userCrud.dao.UserDAO;
+import com.userCrud.dto.SearchDTO;
 import com.userCrud.dto.UserSearchDTO;
 import com.userCrud.model.User;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements ICrudService<User> {
 	
 	@Autowired
 	private UserDAO userDAO;
 	
 	@Override
-	public User getUserById(long userId) {
-		User obj = userDAO.getUserById(userId);
+	public User getById(long userId) {
+		User obj = userDAO.getById(userId);
 		return obj;
 	}
 	
 	@Override
-	public List<User> getAllUsers(UserSearchDTO dto){
-		return userDAO.getAllUsers(dto);
+	public List<User> getAll(SearchDTO dto){
+		return userDAO.getAll((UserSearchDTO)dto);
 	}
 	
 	@Override
-	public synchronized boolean addUser(User user){
+	public synchronized boolean add(User user){
        if ( user.getName() == null || user.getRole() == null || 
     		   userDAO.userExists(user.getName(), user.getRole())) {
     	   return false;
        } else {
-    	   userDAO.addUser(user);
+    	   userDAO.add(user);
     	   return true;
        }
 	}
 	
 	@Override
-	public User updateUser(User user) {
-		return userDAO.updateUser(user);
+	public User update(User user) {
+		return userDAO.update(user);
 	}
 	
 	@Override
-	public void deleteUser(long userId) {
-		userDAO.deleteUser(userId);
+	public void delete(long userId) {
+		userDAO.delete(userId);
 	}
 }

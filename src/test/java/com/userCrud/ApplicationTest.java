@@ -234,5 +234,17 @@ public class ApplicationTest {
     			.andExpect(status().is2xxSuccessful());
     }
     
+    @Test
+    public void shouldKReturnAllUsersNotConsideringTheRemovedOne() throws Exception {
+    	MvcResult result = this.mockMvc.perform(get("/users"))
+      	.andDo(print()) 
+      	.andExpect(status().isOk())
+      	.andReturn();
+    	
+    	User[] users = getUsersFromJson(result.getResponse().getContentAsString());
+    	
+    	assertThat(users.length).isEqualTo(3);
+    }
+    
 }
 

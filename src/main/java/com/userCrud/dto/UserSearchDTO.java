@@ -4,7 +4,7 @@ package com.userCrud.dto;
  * This Object is used to transport/validate information from the http requests
  * to ensure that only valid information can be persisted.
  */
-public final class UserSearchDTO {
+public final class UserSearchDTO implements SearchDTO {
 
     private Long[] id;
     

@@ -17,6 +17,9 @@ public class AbstractTimeStampModel implements Serializable {
 
     @Column(name = "updated_at")
     private Date updatedAt;
+    
+    @Column(name = "activated")
+    private Boolean activated;
 	
 	public Date getCreatedAt() {
 		return createdAt;
@@ -32,6 +35,14 @@ public class AbstractTimeStampModel implements Serializable {
 	
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	public Boolean getActivated() {
+		return activated;
+	}
+	
+	public void setActivated(Boolean activated) {
+		this.activated = activated;
 	}
 	
 	@PrePersist
