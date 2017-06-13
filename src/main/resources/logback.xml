@@ -8,7 +8,7 @@
         <properties>
             <property>
                 <name>host</name>
-                <value>TEST</value>
+                <value>${HOSTNAME}</value>
                 <allowEmpty>false</allowEmpty>
             </property>
             <property>

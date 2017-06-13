@@ -95,7 +95,7 @@ By default(defined on the docker-compose.yml file), we can see the elasticsearch
 
 - See all indexes available: `http://localhost:9200/_cat/indices?v`
 
-- See all record from the main api logs : `http://localhost:9200/logs-2017-06-13/_search?pretty=true&q=*:*`. Don't forget to change the `YYYY-MM-DD` according to the current day.
+- See all record from the main api logs : `http://localhost:9200/logs-2017-06-13/_search?pretty=true&q=*:*&sort=@timestamp:desc`. You can also sort and filter through whatever field you have available. For better understand Elasticsearch take a look at the [Elasticsearch Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/5.0/index.html).  Don't forget to change the `YYYY-MM-DD` on the Url path according to the current day.
 
 
 ## Commands to run without Docker (and through the terminal)

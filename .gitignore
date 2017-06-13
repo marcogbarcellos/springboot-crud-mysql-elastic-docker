@@ -12,6 +12,7 @@ target
 dependency-reduced-pom.xml
 *.sublime-*
 /scratch
+/data/*
 .gradle
 README.html
 .idea
