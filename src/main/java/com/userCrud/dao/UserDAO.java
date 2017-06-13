@@ -46,12 +46,14 @@ public class UserDAO implements ICrudDAO<User>{
 	}
 
 	@Override
-	public void delete(long userId) {
+	public boolean delete(long userId) {
 		User userToRemove = getById(userId);
 		if ( userToRemove != null ) {
 			userToRemove.setActivated(false);
 			entityManager.merge(userToRemove);
+			return true;
 		}
+		return false;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -1,6 +1,8 @@
 package com.userCrud.controller;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,8 +34,11 @@ import io.swagger.annotations.ApiResponses;
 @Api(value="userCrud", description="User operations(CRUD)")
 public class UserController {
 	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private ICrudService<User> userService;
+	
 	
 	@ApiOperation(value = "Find a specific user through Id", response = User.class)
 	@ApiResponses(value = { 
@@ -46,9 +51,11 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
 		User user = userService.getById(id);
-		if (user != null) {
+		if (user != null) { 
+			logger.info("User with Id "+id+" found");
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}
+		logger.warn("User with Id "+id+" NOT found");
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 	
@@ -68,6 +75,7 @@ public class UserController {
 	@GetMapping()
 	@ResponseBody
 	public ResponseEntity<List<User>> getAllUsers(UserSearchDTO dto) {
+		logger.info("Getting users throught SearchDTO: "+dto);
 		List<User> list = userService.getAll(dto); 
 		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 	}
@@ -81,10 +89,12 @@ public class UserController {
             @ApiResponse(code = 500, message = "Failure")})
 	@PostMapping()
 	public ResponseEntity<Void> addUser(@RequestBody User user, UriComponentsBuilder builder) {
-        boolean flag = userService.add(user);
+		boolean flag = userService.add(user);
         if (flag == false) {
+        	logger.error("User not inserted");
         	return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
+        logger.info("User inserted succesfully");
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
@@ -95,13 +105,19 @@ public class UserController {
             @ApiResponse(code = 200, message = "Success", response = User.class),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 409, message = "Conflict"),
             @ApiResponse(code = 500, message = "Failure")})
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
 		user.setId(id);
 		user = userService.update(user);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+		if ( user != null ) {
+			logger.info("User edited successfully:"+user);
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
+		logger.warn("User with id not found");
+		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 	
 	@ApiOperation(value = "Delete an existing user through Id")
@@ -109,11 +125,17 @@ public class UserController {
             @ApiResponse(code = 204, message = "Success"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 409, message = "Conflict"),
             @ApiResponse(code = 500, message = "Failure")})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
-		userService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}	
+		logger.info("Deleting user with id '"+id+"'");
+		boolean userDeleted = userService.delete(id);
+		if ( userDeleted ) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+	}
+	
 } 

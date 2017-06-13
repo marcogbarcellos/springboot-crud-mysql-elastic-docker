@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="ELASTIC" class="com.internetitem.logback.elasticsearch.ElasticsearchAppender">
+        <url>${ELASTIC_SEARCH_URL}</url>
+        <index>logs-%date{yyyy-MM-dd}</index>
+        <type>runtime</type>
+        <properties>
+            <property>
+                <name>host</name>
+                <value>TEST</value>
+                <allowEmpty>false</allowEmpty>
+            </property>
+            <property>
+                <name>severity</name>
+                <value>%level</value>
+            </property>
+            <property>
+                <name>thread</name>
+                <value>%thread</value>
+            </property>
+            <property>
+                <name>stacktrace</name>
+                <value>%ex</value>
+            </property>
+            <property>
+                <name>logger</name>
+                <value>%logger</value>
+            </property>
+        </properties>
+        <headers>
+            <header>
+                <name>Content-Type</name>
+                <value>text/plain</value>
+            </header>
+        </headers>
+    </appender>
+	
+	<root level="info">
+        <appender-ref ref="ELASTIC" />
+    </root>
+
+    <logger name="es-error-logger" level="INFO" additivity="false">
+        <appender-ref ref="ELASTIC" />
+    </logger>
+
+    <logger name="es-logger" level="INFO" additivity="false">
+    	<appender-ref ref="ELASTIC" />
+        <appender name="ES_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <encoder>
+                <pattern>%msg</pattern>
+            </encoder>
+        </appender>
+    </logger>
+	
+</configuration>

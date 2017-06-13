@@ -44,7 +44,7 @@ public class UserService implements ICrudService<User> {
 	}
 	
 	@Override
-	public void delete(long userId) {
-		userDAO.delete(userId);
+	public boolean delete(long userId) {
+		return userDAO.delete(userId);
 	}
 }

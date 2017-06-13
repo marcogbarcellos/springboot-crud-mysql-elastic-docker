@@ -213,7 +213,7 @@ public class ApplicationTest {
     
     @Test
     public void shouldITryToDeleteUnexistentUserButFail() throws Exception {
-    	mockMvc.perform(delete("/users/UNEXISTENTID"))
+    	mockMvc.perform(delete("/users/UnexistentID"))
     			.andExpect(status().is4xxClientError());
     }	
     
@@ -244,6 +244,15 @@ public class ApplicationTest {
     	User[] users = getUsersFromJson(result.getResponse().getContentAsString());
     	
     	assertThat(users.length).isEqualTo(3);
+    }
+    
+    @Test
+    public void shouldLTryToEditUnexistingUser() throws Exception {
+    	mockMvc.perform(put("/users/UnexistentID")
+    			.contentType(APPLICATION_JSON_UTF8)
+                .content(userJson("userNew", null)))
+                .andExpect(status().is4xxClientError());
+    	
     }
     
 }
