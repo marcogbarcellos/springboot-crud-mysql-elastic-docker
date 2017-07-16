@@ -14,25 +14,12 @@ import io.swagger.annotations.ApiModelProperty;
 public class User extends AbstractTimeStampModel {
 	
 	private static final long serialVersionUID = 1L;
-
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	@ApiModelProperty(hidden = true)
-    private Long id;
+  
+  @Column(name = "name", nullable = false)
+  private String name;
     
-    @Column(name = "name", nullable = false)
-    private String name;
-    
-    @Column(name = "role", nullable = false)
-    private String role;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Column(name = "role", nullable = false)
+  private String role;
 
 	public String getName() {
 		return name;

@@ -16,7 +16,7 @@ import com.userCrud.model.User;
 
 @Transactional
 @Repository
-public class UserDAO implements ICrudDAO<User>{
+public class UserDAO extends AbstractDAO<User>{
 	
 	@PersistenceContext	
 	private EntityManager entityManager;	
@@ -58,7 +58,7 @@ public class UserDAO implements ICrudDAO<User>{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> getAll(SearchDTO dto) {
+	public List<User> getAllWithFilter(SearchDTO dto) {
 		UserSearchDTO userDto = (UserSearchDTO) dto;
 		
 		String hql = " FROM User as u WHERE u.activated=true ";

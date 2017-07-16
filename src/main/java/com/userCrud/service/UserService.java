@@ -24,7 +24,7 @@ public class UserService implements ICrudService<User> {
 	
 	@Override
 	public List<User> getAll(SearchDTO dto){
-		return userDAO.getAll((UserSearchDTO)dto);
+		return userDAO.getAllWithFilter(dto);
 	}
 	
 	@Override

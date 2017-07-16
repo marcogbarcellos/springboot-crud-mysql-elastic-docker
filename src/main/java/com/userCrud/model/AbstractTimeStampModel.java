@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -12,8 +15,13 @@ import io.swagger.annotations.ApiModelProperty;
 
 @MappedSuperclass
 @SuppressWarnings("serial")
-public class AbstractTimeStampModel implements Serializable { 
+public class AbstractTimeStampModel implements IModel { 
 	
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
+  @ApiModelProperty(hidden = true)
+  protected Long id;
+  
 	@Column(name = "created_at")
 	@ApiModelProperty(hidden = true)
     private Date createdAt;
@@ -26,6 +34,14 @@ public class AbstractTimeStampModel implements Serializable {
     @ApiModelProperty(hidden = true)
     private Boolean activated;
 	
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }  
+    
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -59,4 +75,5 @@ public class AbstractTimeStampModel implements Serializable {
     public void onPreUpdate() {
     	this.updatedAt = new Date();
     }
+
 }
